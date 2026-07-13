@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Join a Crew Support group</title>
+<style>
+  body { font: 17px/1.6 -apple-system, "Segoe UI", Roboto, sans-serif; color: #1a1a1a;
+         max-width: 34rem; margin: 0 auto; padding: 2rem 1.2rem; text-align: center; }
+  .pin { font-size: 3rem; }
+  h1 { font-size: 1.5rem; margin: 0.4rem 0 1rem; }
+  .code { font: 700 2rem/1 ui-monospace, Menlo, monospace; letter-spacing: 0.15em;
+          background: #eef3ee; border: 1px solid #cfdccf; border-radius: 10px;
+          display: inline-block; padding: 0.5rem 1rem; margin: 0.6rem 0 1.2rem; }
+  .btn { display: inline-block; background: #1b5e20; color: #fff; text-decoration: none;
+         border-radius: 10px; padding: 0.8rem 1.6rem; font-weight: 600; margin: 0.3rem; }
+  .muted { color: #666; font-size: 0.95rem; }
+  ol { text-align: left; display: inline-block; }
+</style>
+</head>
+<body>
+<div class="pin">📍</div>
+<h1>Join a Crew Support group</h1>
+
+<div id="withcode" hidden>
+  <p>Your group code:</p>
+  <div class="code" id="code"></div>
+  <p><a class="btn" id="openapp" href="#">Open in the app</a></p>
+  <p class="muted">If the app is installed, this page normally opens it automatically.</p>
+</div>
+
+<div id="nocode" hidden>
+  <p class="muted">This invite link is missing its group code. Ask for a new invite,
+  or enter the 6-character code directly in the app.</p>
+</div>
+
+<p>Don't have the app yet?</p>
+<ol>
+  <li>Install <strong>Crew Support</strong> on your Android phone.</li>
+  <li>Open it and enter the group code above.</li>
+</ol>
+
+<script>
+  var code = new URLSearchParams(location.search).get("g");
+  if (code && /^[A-Za-z0-9]{4,10}$/.test(code)) {
+    code = code.toUpperCase();
+    document.getElementById("withcode").hidden = false;
+    document.getElementById("code").textContent = code;
+    // Android intent URL: opens the app if installed, no-op otherwise.
+    document.getElementById("openapp").href =
+      "intent://join?g=" + code +
+      "#Intent;scheme=https;package=com.crewsupport.app;" +
+      "S.browser_fallback_url=" + encodeURIComponent(location.href) + ";end";
+  } else {
+    document.getElementById("nocode").hidden = false;
+  }
+</script>
+</body>
+</html>
